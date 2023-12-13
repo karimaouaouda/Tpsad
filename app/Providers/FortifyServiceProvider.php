@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
+use App\Actions\Fortify\PasswordValidationRules;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -41,6 +43,36 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        });
+
+        //Fortify authenticating
+        Fortify::authenticateUsing(function(Request $request){
+            $request->validate([
+                'email' => ['required', "email"],
+                "guard" => ["required", "in:admin,etudiant"],
+                "password" => ["required", 'min:8' , 'max:40']
+            ]);
+
+            Auth::shouldUse($request->guard);
+
+            if(Auth::attempt([
+                "email" => $request->email,
+                "password" => $request->password
+            ])){
+                session([
+                    "guard" => $request->guard
+                ]);
+
+                return Auth::user();
+
+            }else{
+                return false;
+            }
+            
+        });
+
+        Fortify::loginView(function(){
+            return view("auth.custom-login");
         });
     }
 }

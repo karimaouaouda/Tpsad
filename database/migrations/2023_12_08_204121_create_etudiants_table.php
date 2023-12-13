@@ -6,33 +6,31 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
     /**
      * Run the migrations.
-    */
-    
+     */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
+        Schema::dropIfExists('etudiants');
+        Schema::create('etudiants', function (Blueprint $table) {
+            $table->integer("matricule", unsigned : true)->primary();
             $table->string('name');
+            $table->string('branch_name');
+            $table->foreign('branch_name')->references('name')->on('branches')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
-            $table->foreignId('current_team_id')->nullable();
+            $table->boolean("oriented")->default(false);
             $table->string('profile_photo_path', 2048)->nullable();
+            $table->float("bac_note", unsigned: true);
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-    */
-
+     */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('etudiants');
     }
-
 };
