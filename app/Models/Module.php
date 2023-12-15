@@ -9,6 +9,8 @@ class Module extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = "name";
+
     protected $fillable = [
         "name"
     ];

@@ -1,3 +1,4 @@
+
 <x-admin.wrapper>
 
     <div class="section-title w-[fit-content] mx-auto">
@@ -8,15 +9,15 @@
     </div>
 
     <div class="container drop-shadow-lg mt-2 mx-auto w-full md:w-4/5 bg-[#f5f5f5] rounded-lg p-2">
-        <form action="{{route('admin.create.etudiant')}}" class="mx-auto" method="post">
+        <form action="{{route('admin.etudiant.edit', ["etudiant" => $etudiant->matricule])}}" class="mx-auto" method="post">
             @csrf
             <input type="hidden" name="guard" value="etudiant">
             <div class="form-errors my-2"></div>
             <div class="inputs">
                 <div class="inpt my-4 w-full">
                     <div class="hi m-auto w-4/5 relative">
-                        <label for="matricule" class="block text-gray-500">name:</label>
-                        <input value="36036568" id="matricule" placeholder="matricule..." type="text" name="matricule"
+                        <label for="matricule" class="block text-gray-500">matricule:</label>
+                        <input readonly value="{{$etudiant->matricule}}" id="matricule" placeholder="matricule..." type="text" name="matricule"
                                class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('matricule')
@@ -28,7 +29,7 @@
                 <div class="inpt my-4 w-full">
                     <div class="hi m-auto w-4/5 relative">
                         <label for="name" class="block text-gray-500">name:</label>
-                        <input value="karim aouaouda" id="name" placeholder="name..." type="text" name="name"
+                        <input value="{{$etudiant->name}}" id="name" placeholder="name..." type="text" name="name"
                                class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('name')
@@ -42,7 +43,7 @@
                     <select class="m-auto w-4/5 border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 " name="branch_name" id="branch_name">
                         <option value="none" selected disabled>chose branch name</option>
                         @foreach($branches as $branch)
-                            <option value="{{$branch->name}}" >{{$branch->name}}</option>
+                            <option value="{{$branch->name}}" @selected($branch->name == $etudiant->branch->name) >{{$branch->name}}</option>
                         @endforeach
                     </select>
                     @error('branch_name')
@@ -55,7 +56,7 @@
                 <div class="inpt my-4 w-full">
                     <div class="hi m-auto w-4/5 relative">
                         <label for="name" class="block text-gray-500">email:</label>
-                        <input value="karim@gmail.com" id="email" placeholder="email..." type="email" name="email"
+                        <input value="{{$etudiant->email}}" id="email" placeholder="email..." type="email" name="email"
                                class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('email')
@@ -68,8 +69,8 @@
                 <div class="inpt my-4 w-full">
                     <div class="hi m-auto w-4/5 relative">
                         <label for="password" class="block text-gray-500">password:</label>
-                        <input value="karim1234" id="password" placeholder="password..." type="password" name="password"
-                               class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
+                        <input value="{{$etudiant->password}}" id="password" placeholder="password..." type="password" name="password"
+                                class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('password')
                     <div class="text-center text-red-400 font-medium">
@@ -80,7 +81,7 @@
                 <div class="inpt my-4 w-full">
                     <div class="hi m-auto w-4/5 relative">
                         <label for="password_confirmation" class="block text-gray-500">password confirmation:</label>
-                        <input value="karim1234" id="password_confirmation" placeholder="password_confirmation..." type="password" name="password_confirmation"
+                        <input value="{{$etudiant->password}}" id="password_confirmation" placeholder="password_confirmation..." type="password" name="password_confirmation"
                                class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('password_confirmation')
@@ -93,7 +94,7 @@
                 <div class="inpt my-4 w-full">
                     <div class="hi m-auto w-4/5 relative">
                         <label for="bac_note" class="block text-gray-500">bac_note:</label>
-                        <input value="18" id="bac_note" placeholder="bac note..." type="number" min="0" name="bac_note"
+                        <input value="{{$etudiant->bac_note}}" id="bac_note" placeholder="bac note..." type="number" min="0" name="bac_note"
                                class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('bac_note')
@@ -106,7 +107,7 @@
                 <div class="inpt my-4 w-full">
                     <div class="hi m-auto w-4/5 relative">
                         <label for="bac_note" class="block text-gray-500">math_note:</label>
-                        <input value="18" id="math_note" placeholder="math note..." type="number" min="0" name="math_note"
+                        <input value="{{$etudiant->getNote('math')}}" id="math_note" placeholder="math note..." type="number" min="0" name="math_note"
                                class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('math_note')
@@ -119,7 +120,7 @@
                 <div class="inpt my-4 w-full">
                     <div class="hi m-auto w-4/5 relative">
                         <label for="bac_note" class="block text-gray-500">arab_note:</label>
-                        <input value="18" id="arab_note" placeholder="math note..." type="number" min="0" name="arab_note"
+                        <input value="{{$etudiant->getNote('arabic') ?? 15}}" id="arab_note" placeholder="math note..." type="number" min="0" name="arab_note"
                                class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('arab_note')
@@ -132,7 +133,7 @@
                 <div class="inpt my-4 w-full">
                     <div class="hi m-auto w-4/5 relative">
                         <label for="bac_note" class="block text-gray-500">science note:</label>
-                        <input value="18" id="sci_note" placeholder="science note..." type="number" min="0" name="sci_note"
+                        <input value="{{$etudiant->getNote('science')}}" id="sci_note" placeholder="science note..." type="number" min="0" name="sci_note"
                                class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('sci_note')
@@ -149,8 +150,8 @@
             <div class="text-center my-4 w-4/5 mx-auto flex flex-col items-center justify-center">
                 <button type="submit"
                         class="w-4/5 mx-auto bg-green-500 text-white py-2 rounded-lg hover:bg-green-700 duration-300 ease-in-out">
-                    <i class="bi bi-person-plus mr-2"></i>
-                    create etudiant
+                    <i class="bi bi-floppy mr-2"></i>
+                    save changes
                 </button>
             </div>
         </form>

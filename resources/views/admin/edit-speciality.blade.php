@@ -40,7 +40,8 @@
 
 
                 <div class="inpt my-4 w-full text-center">
-                    <select class="m-auto w-4/5 border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 " name="branch_name" id="branch_name">
+                    <label for="branch_name" class="block">select branch</label>
+                    <select  class="m-auto w-4/5 border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 " name="branch_name" id="branch_name">
                         <option value="none" selected disabled>chose main module name</option>
                     </select>
                     @error('branch_name')

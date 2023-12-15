@@ -17,24 +17,24 @@
                     <div class="hi m-auto w-4/5 relative">
                         <label for="matricule" class="block text-gray-500">name:</label>
                         <input value="36036568" id="matricule" placeholder="matricule..." type="text" name="matricule"
-                            class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
+                               class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('matricule')
-                        <div class="text-center text-red-400 font-medium">
-                            {{$message}}
-                        </div>
+                    <div class="text-center text-red-400 font-medium">
+                        {{$message}}
+                    </div>
                     @enderror
                 </div>
                 <div class="inpt my-4 w-full">
                     <div class="hi m-auto w-4/5 relative">
                         <label for="name" class="block text-gray-500">name:</label>
                         <input value="karim aouaouda" id="name" placeholder="name..." type="text" name="name"
-                            class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
+                               class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('name')
-                        <div class="text-center text-red-400 font-medium">
-                            {{$message}}
-                        </div>
+                    <div class="text-center text-red-400 font-medium">
+                        {{$message}}
+                    </div>
                     @enderror
                 </div>
 
@@ -46,9 +46,9 @@
                         @endforeach
                     </select>
                     @error('branch_name')
-                        <div class="text-center text-red-400 font-medium">
-                            {{$message}}
-                        </div>
+                    <div class="text-center text-red-400 font-medium">
+                        {{$message}}
+                    </div>
                     @enderror
                 </div>
 
@@ -56,12 +56,12 @@
                     <div class="hi m-auto w-4/5 relative">
                         <label for="name" class="block text-gray-500">email:</label>
                         <input value="karim@gmail.com" id="email" placeholder="email..." type="email" name="email"
-                            class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
+                               class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('email')
-                        <div class="text-center text-red-400 font-medium">
-                            {{$message}}
-                        </div>
+                    <div class="text-center text-red-400 font-medium">
+                        {{$message}}
+                    </div>
                     @enderror
                 </div>
 
@@ -69,12 +69,12 @@
                     <div class="hi m-auto w-4/5 relative">
                         <label for="password" class="block text-gray-500">password:</label>
                         <input value="karim1234" id="password" placeholder="password..." type="password" name="password"
-                            class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
+                               class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('password')
-                        <div class="text-center text-red-400 font-medium">
-                            {{$message}}
-                        </div>
+                    <div class="text-center text-red-400 font-medium">
+                        {{$message}}
+                    </div>
                     @enderror
                 </div>
                 <div class="inpt my-4 w-full">
@@ -94,12 +94,12 @@
                     <div class="hi m-auto w-4/5 relative">
                         <label for="bac_note" class="block text-gray-500">bac_note:</label>
                         <input value="18" id="bac_note" placeholder="bac note..." type="number" min="0" name="bac_note"
-                            class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
+                               class="border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 w-full">
                     </div>
                     @error('bac_note')
-                        <div class="text-center text-red-400 font-medium">
-                            {{$message}}
-                        </div>
+                    <div class="text-center text-red-400 font-medium">
+                        {{$message}}
+                    </div>
                     @enderror
                 </div>
 
@@ -148,7 +148,7 @@
 
             <div class="text-center my-4 w-4/5 mx-auto flex flex-col items-center justify-center">
                 <button type="submit"
-                    class="w-4/5 mx-auto bg-green-500 text-white py-2 rounded-lg hover:bg-green-700 duration-300 ease-in-out">
+                        class="w-4/5 mx-auto bg-green-500 text-white py-2 rounded-lg hover:bg-green-700 duration-300 ease-in-out">
                     <i class="bi bi-person-plus mr-2"></i>
                     create etudiant
                 </button>

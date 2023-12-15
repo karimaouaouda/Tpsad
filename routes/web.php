@@ -51,8 +51,26 @@ Route::prefix("admin")->middleware('auth:admin')->name('admin.')->group(function
     Route::post('/create-etudiant' , [RegisteredUserController::class, 'store'])->name('create.etudiant');
 
     Route::get('/edit-etudiant/{etudiant}', function(Etudiant $etudiant){
-        return 'etudiant : '. $etudiant->matricule;
+        $branches = \App\Models\Branch::all();
+        $etudiant->makeVisible(["password"]);
+        return view("admin.edit-etudiant", compact('etudiant', 'branches'));
     })->name("etudiant.edit");
+
+    Route::post('/edit-etudiant/{etudiant}', function(\Illuminate\Http\Request $request, Etudiant $etudiant){
+        $request->merge([
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password)
+        ]);
+
+        $request->password = \Illuminate\Support\Facades\Hash::make($request->password);
+        $etudiant->update($request->all());
+
+        $etudiant->setNotes([
+            "math" => $request->math_note,
+            "arabic" => $request->arab_note,
+            "science" => $request->sci_note
+        ]);
+        return redirect()->back();
+    });
 
     Route::post('/remove-etudiant/{etudiant}' , function(Etudiant $etudiant){
         $etudiant->delete();
@@ -104,6 +122,9 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('admin.home');
+       if(session('guard') == "admin"){
+           return view('admin.home');
+       }
+        return view('etudiant.home');
     })->name('dashboard');
 });

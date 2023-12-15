@@ -103,13 +103,32 @@ class Etudiant extends Authenticatable
     public function calcMoyen(Speciality $speciality){
         $modulename = $speciality->module_name;
 
-        $note = $this->notes()->where("module_name", "=", $modulename)->first();
+        $note = $this->notes->pivot->where("module_name", "=", $modulename)->first();
 
         $note = $note->note;
 
         $moyen = ($this->bac_note * 2 + $note ) / 3;
 
         return $moyen;
+    }
+
+    public function getNote(String $module){
+        return $this->notes()->where("name" , "=", $module)->first()->pivot->note;
+    }
+
+    public function setNotes(array $notes){
+
+
+
+        foreach ($notes as $module => $note){
+            if(! $this->notes()->where("name", "=", $module)->first()){
+                dd( $this->notes()->where("name", "=", $module)->get());
+            }
+
+            $pivot = $this->notes()->where("name", "=", $module)->first()->pivot;
+            $pivot->note = $note;
+            $pivot->save();
+        }
     }
 
 
@@ -120,7 +139,7 @@ class Etudiant extends Authenticatable
     }
 
     public function notes() : BelongsToMany{
-        $this->belongsToMany(Module::class, "notes", "etudiant_matricule")->withPivot("note");
+        return $this->belongsToMany(Module::class, "notes", "etudiant_matricule")->withPivot("note");
     }
 
     public function speciality(){

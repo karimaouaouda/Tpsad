@@ -22,10 +22,12 @@ class RedirectIfAuthenticated
 
         $guards = Config::get("auth.guards");
 
-        foreach ($guards as $guard => $details) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(route('admin.home'));
-            }
+        if (Auth::guard("admin")->check()) {
+            return redirect(route('admin.home'));
+        }
+
+        if (Auth::guard("etudiant")->check()) {
+            return redirect(route('etudiant.home'));
         }
 
         return $next($request);
