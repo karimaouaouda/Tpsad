@@ -15,6 +15,6 @@ class Branch extends Model
 
 
     public function etudiants(){
-        return $this->hasMany(Etudiant::class, "branch_name");
+        return $this->hasMany(Etudiant::class, "branch_name", "name");
     }
 }

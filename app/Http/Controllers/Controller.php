@@ -34,8 +34,10 @@ class Controller extends BaseController
 
         foreach($avalaible_choices as $choice){
             $my_etudiants = $etudiants->filter(function($etudiant) use ($choice){
-                return $etudiant->first_choice->id == $choice->id;
+                return $etudiant->first_choice && $etudiant->first_choice->id == $choice->id;
             });
+
+
 
             $available_places = $choice->places;
             $with_bac = $choice->with_bac;
@@ -51,9 +53,13 @@ class Controller extends BaseController
                 if($available_places == 0){
                     break;
                 }
-
                 $etudiant->sendTo($choice);
+                $available_places--;
             }
+
+            $choice->places = $available_places;
+
+            $choice->save();
 
             $failedEtudiants = $my_etudiants->filter(function($etudiant){
                 return !$etudiant->oriented;
@@ -63,19 +69,9 @@ class Controller extends BaseController
                 $etudiant->rejectedFrom($choice);
             }
         }
-    
-    
-        $failed = collect();
-        $success = collect();
-    
-        foreach($etudiants as $etudiant){
-            if($res = $etudiant->orienter()){
-                //true one
-                $success->add($etudiant);
-            }else{
-                //has problem
-                $failed->add($etudiant);
-            }
-        }
+
+
+
+        return redirect()->back();
     }
 }

@@ -27,7 +27,6 @@
 
         .main-content {
             grid-area: main;
-            grid-template-areas: 'left-banner main-banner main-banner main-banner right-banner';
         }
 
         .loader {
@@ -120,8 +119,8 @@
         }">
         <nav
             class="w-full h-14 bg-[#f5f5f5] border-b border-slate-500 flex justify-between px-4 relative
-                    sm:px-4 
-                    lg:px-10 
+                    sm:px-4
+                    lg:px-10
                     xl:px-20">
             <div class="toggler h-full flex py-2" style="z-index: 500;">
                 <i class="bi bi-list mx-2 text-2xl flex justifi-center items-center px-2
@@ -137,9 +136,12 @@
                 <div class="px-2 h-full flex items-center">
 
                     <div class="orienter-btn hidden sm:block">
-                        <button class="p-2 bg-sky-500 hover:bg-sky-600 text-white rounded-md" @click="">
-                            orient students
-                        </button>
+                        <form action="{{route('admin.orientation')}}" method="post">
+                            @csrf
+                            <button class="p-2 bg-sky-500 hover:bg-sky-600 text-white rounded-md">
+                                orient students
+                            </button>
+                        </form>
                     </div>
 
                     <div class="add h-full py-2 mx-10  relative" x-data="{ open: false }">
@@ -156,20 +158,20 @@
                             <ul class="px-2 w-full" x-data="{
                                 list: [{
                                         icon: 'bi bi-person-add',
-                                        link: '#',
+                                        link: '{{route('admin.create.etudiant')}}',
                                         title: 'new student',
                                     },
                                     {
                                         icon: 'bi bi-book',
-                                        link: '#',
+                                        link: '{{route('admin.create.speciality')}}',
                                         title: 'new speciality',
-                            
+
                                     },
                                     {
                                         icon: 'bi bi-person-check',
-                                        link: '#',
+                                        link: '{{route('admin.create.admin')}}',
                                         title: 'new admin',
-                            
+
                                     }
                                 ]
                             }">
@@ -201,124 +203,16 @@
 
         <div class="content mt-2 grid relative" style="z-index: 1;" id="content">
             <div
-                class="main-content
-                        flex justify-center
-                        lg:grid lg:grid-cols-5">
-                <!-- left banner in just large screens -->
-                <div class="h-full border-e top-10 hidden lg:block" style="grid-area: left-banner; position: sticky;">
-                    <div class="left-tab px-2 h-full duration-500 ease-in-out overflow-hidden  left-0">
+                class="main-content flex justify-center">
 
-                        <div class="left-tab-header h-14 px-2">
-                            <div class="toggler h-full flex py-2 uppercase justify-center items-center">
-                                <i class="bi bi-sliders2 mr-2"></i>
-                                <span>
-                                    quick tools
-                                </span>
-                            </div>
-
-                        </div>
-                        <div class="hr h-[1px] w-full bg-gray-300"></div>
-                        <ul class="w-full px-4 mt-4 capitalize font-light tracking-wide" x-data="{
-                            list: [{
-                                    icon: 'bi bi-house-door',
-                                    link: '{{route('admin.home')}}',
-                                    title: 'home'
-                                },
-                                {
-                                    icon: 'bi bi-person-lines-fill',
-                                    link: '{{route('admin.list.etudiants')}}',
-                                    title: 'students list'
-                                },
-                                {
-                                    icon: 'bi bi-person-lines-fill',
-                                    link: '{{ route('admin.list.specialities') }}',
-                                    title: 'specialities list'
-                                },
-                                {
-                                    icon: 'bi bi-person-lines-fill',
-                                    link: '{{ route('admin.list.admins') }}',
-                                    title: 'admins list'
-                                }
-                            ]
-                        }">
-
-                            <template x-for="li in list">
-                                <li class="w-full">
-                                    <a :href="li.link"
-                                        class="block w-full py-2 px-2
-                             hover:bg-gray-200 rounded-md ">
-                                        <i :class="li.icon" class="mr-1"></i>
-                                        <span x-text="li.title"></span>
-                                    </a>
-                                </li>
-                            </template>
-
-                        </ul>
-
-                        <div class="orienter-btn block sm:hidden text-center my-10">
-                            <button class="p-2 bg-sky-500 hover:bg-sky-600 text-white rounded-md">
-                                orient students
-                            </button>
-                        </div>
-
-
-                    </div>
-                </div>
 
                 <!-- main banner in all screens -->
-                <div class="px-2 w-full mx-auto" style="grid-area: main-banner;">
+                <div class="px-2 w-full mx-auto  ">
                     {{ $slot }}
-
                 </div>
 
                 <!-- right banner in just large screens -->
-                <div class="h-full  border-s  hidden lg:block" style="grid-area: right-banner;">
-                    <div class="right-tab px-2 h-full overflow-hidden  ">
 
-                        <div class="left-tab-header h-14 px-2">
-                            <div class="toggler h-full flex py-2 uppercase justify-center items-center">
-                                <i class="bi bi-person-gear text-xl mr-2"></i>
-                                <span>
-                                    account actions
-                                </span>
-                            </div>
-
-                        </div>
-
-                        <div class="hr h-[1px] w-full bg-gray-300"></div>
-                        <ul class="w-full px-4 mt-4 capitalize font-light tracking-wide" x-data="{
-                            list: [{
-                                    icon: 'bi bi-gear',
-                                    link: '#',
-                                    title: 'seettings',
-                                    pushClass: ''
-                                },
-                                {
-                                    icon: 'bi bi-box-arrow-left',
-                                    link: '#',
-                                    title: 'log out',
-                                    pushClass: 'bg-red-300 my-2 font-medium hover:bg-red-400 text-white'
-                                }
-                            ]
-                        }">
-
-                            <template x-for="li in list">
-                                <li class="w-full">
-                                    <a :href="li.link"
-                                        class="block w-full py-2 px-2
-                         hover:bg-gray-200 rounded-md"
-                                        :class="li.pushClass">
-                                        <i :class="li.icon" class="mr-1"></i>
-                                        <span x-text="li.title"></span>
-                                    </a>
-                                </li>
-                            </template>
-
-                        </ul>
-
-                    </div>
-
-                </div>
 
             </div>
 
@@ -480,22 +374,22 @@
                 <ul class="w-full px-4 mt-4 capitalize font-light tracking-wide" x-data="{
                     list: [{
                             icon: 'bi bi-house-door',
-                            link: '#',
+                            link: '{{route('admin.home')}}',
                             title: 'home'
                         },
                         {
                             icon: 'bi bi-person-lines-fill',
-                            link: '#',
+                            link: '{{route('admin.list.etudiants')}}',
                             title: 'students list'
                         },
                         {
                             icon: 'bi bi-person-lines-fill',
-                            link: '#',
+                            link: '{{route('admin.list.specialities')}}',
                             title: 'specialities list'
                         },
                         {
                             icon: 'bi bi-person-lines-fill',
-                            link: '#',
+                            link: '{{route('admin.list.admins')}}',
                             title: 'admins list'
                         }
                     ]
@@ -515,9 +409,13 @@
                 </ul>
 
                 <div class="orienter-btn block sm:hidden text-center my-10">
-                    <button class="p-2 bg-sky-500 hover:bg-sky-600 text-white rounded-md">
-                        orient students
-                    </button>
+                    <form action="{{route('admin.orientation')}}" method="post">
+                        @csrf
+                        <button class="p-2 bg-sky-500 hover:bg-sky-600 text-white rounded-md">
+                            orient students
+                        </button>
+                    </form>
+
                 </div>
 
 
@@ -540,7 +438,7 @@
                         </div>
                         <div
                             class="ml-2 flex items-center font-normal capitalize tracking-wider text-md text-slate-400">
-                            Karim Aouaouda
+                            {{auth()->user()->name}}
                         </div>
                     </div>
                     <i class="bi bi-x mx-2 text-2xl flex justify-center items-center w-8 h-8
@@ -552,15 +450,9 @@
                 <ul class="w-full px-4 mt-4 capitalize font-light tracking-wide" x-data="{
                     list: [{
                             icon: 'bi bi-gear',
-                            link: '#',
+                            link: '/user/profile',
                             title: 'seettings',
                             pushClass: ''
-                        },
-                        {
-                            icon: 'bi bi-box-arrow-left',
-                            link: '#',
-                            title: 'log out',
-                            pushClass: 'bg-red-300 my-2 font-medium hover:bg-red-400 text-white'
                         }
                     ]
                 }">
@@ -576,6 +468,14 @@
                             </a>
                         </li>
                     </template>
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf
+                        <button type="submit" class="block w-full py-2 px-2
+                          rounded-md bg-red-300 my-2 font-medium hover:bg-red-400 text-white">
+                            <i class="bi bi-box-arrow-left mr-1"></i>
+                            log out
+                        </button>
+                    </form>
 
                 </ul>
 

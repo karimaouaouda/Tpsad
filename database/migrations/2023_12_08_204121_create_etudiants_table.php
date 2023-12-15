@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer("matricule", unsigned : true)->primary();
             $table->string('name');
             $table->string('branch_name');
+            $table->foreignId("speciality_id")->nullable()->references("id")->on("specialities");
             $table->foreign('branch_name')->references('name')->on('branches')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('email')->unique();
             $table->string('password');

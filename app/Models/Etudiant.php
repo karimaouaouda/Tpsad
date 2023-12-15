@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -17,6 +18,9 @@ class Etudiant extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+
+
+    protected  $primaryKey = "matricule";
 
     /**
      * The attributes that are mass assignable.
@@ -60,11 +64,11 @@ class Etudiant extends Authenticatable
     //relations
 
     public function branch(){
-        return $this->belongsTo(Branch::class, "branch_name");
+        return $this->belongsTo(Branch::class, "branch_name", "name");
     }
 
     public function choices(){
-        return $this->belongsToMany(Speciality::class, "choix", "etudiant_matricule");;
+        return $this->belongsToMany(Speciality::class, "choix", "etudiant_matricule")->withPivot("status");
     }
 
     //attributes
@@ -80,14 +84,46 @@ class Etudiant extends Authenticatable
         }
     }
 
+    public function sendTo(Speciality $speciality){
+        $choices = $this->choices;
+        foreach ($choices as $choice){
+            $choice->status = "rejected";
+            if($choice->speciality_id == $speciality->id){
+                $choice->pivot->status = "accepted";
+            }
+            $choice->pivot->save();
+        }
+        $this->oriented = true;
+        $this->speciality_id = $speciality->id;
+        $this->save();
+
+
+    }
+
     public function calcMoyen(Speciality $speciality){
         $modulename = $speciality->module_name;
-        
+
+        $note = $this->notes()->where("module_name", "=", $modulename)->first();
+
+        $note = $note->note;
+
+        $moyen = ($this->bac_note * 2 + $note ) / 3;
+
+        return $moyen;
     }
 
 
     //this is the action of orientation etudiant
-    public function orienter(){
-        //first we need all the requirements
+
+    public function orientation(){
+        return $this->hasOne(Orientation::class, "etudiant_matricule");
+    }
+
+    public function notes() : BelongsToMany{
+        $this->belongsToMany(Module::class, "notes", "etudiant_matricule")->withPivot("note");
+    }
+
+    public function speciality(){
+        return $this->belongsTo(Speciality::class, "speciality_id" );
     }
 }

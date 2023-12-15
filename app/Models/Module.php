@@ -12,4 +12,9 @@ class Module extends Model
     protected $fillable = [
         "name"
     ];
+
+    public function notes(){
+        $this->belongsToMany(Module::class, "notes", "module_name")->withPivot("note");
+    }
+
 }

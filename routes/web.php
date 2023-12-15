@@ -5,6 +5,7 @@ use App\Models\Admin;
 use App\Models\Etudiant;
 use App\Models\Speciality;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,8 +27,9 @@ Route::middleware('etudiant')->name('etudiant')->group(function(){
     Route::get('/' , [EtudiantController::class])->name('home');
 });
 
-Route::prefix("admin")->name('admin.')->group(function(){
+Route::prefix("admin")->middleware('auth:admin')->name('admin.')->group(function(){
     Route::get('/home' , function(){
+
         return view('admin.home');
     })->name("home");
 
@@ -42,10 +44,20 @@ Route::prefix("admin")->name('admin.')->group(function(){
     })->name('remove.etudiant');
 
     Route::get('/create-etudiant' , function(Etudiant $etudiant){
-        return view('admin.create-etudiant');
+        $branches = \App\Models\Branch::all();
+        return view('admin.create-etudiant', compact("branches"));
     })->name('create.etudiant');
 
+    Route::post('/create-etudiant' , [RegisteredUserController::class, 'store'])->name('create.etudiant');
 
+    Route::get('/edit-etudiant/{etudiant}', function(Etudiant $etudiant){
+        return 'etudiant : '. $etudiant->matricule;
+    })->name("etudiant.edit");
+
+    Route::post('/remove-etudiant/{etudiant}' , function(Etudiant $etudiant){
+        $etudiant->delete();
+        return redirect()->back();
+    } )->name('etudiant.remove');
 
     Route::get('/allspecialities' , function(){
         $specialities = Speciality::all();

@@ -13,10 +13,20 @@ return new class extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->integer("etudiant_matricule", unsigned:true);
-            $table->foreign("etudiant_matricule")->references("matricule")->on("etudiants")->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string("module_name");
-            $table->foreign("module_name")->references("name")->on("modules")->cascadeOnDelete()->cascadeOnUpdate();
             $table->float("note", unsigned:true);
+            $table->string("module_name");
+            $table->foreign("etudiant_matricule")
+                  ->references("matricule")
+                  ->on("etudiants")
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
+
+            $table->foreign("module_name")
+                  ->references("name")
+                  ->on("modules")
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
+
         });
     }
 

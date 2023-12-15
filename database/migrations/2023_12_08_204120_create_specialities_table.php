@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->boolean("only_bac");
             $table->integer("places", unsigned:true);
-            $table->string('module_name');
-            $table->foreign("module_name")->nullable()->references("name")->on("modules")->cascadeOnDelete();
+            $table->string('module_name')->nullable();
+            $table->foreign("module_name")->references("name")->on("modules")->cascadeOnDelete();
             $table->timestamps();
         });
     }
