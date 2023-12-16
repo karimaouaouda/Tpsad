@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('modules');
         Schema::create('modules', function (Blueprint $table) {
             $table->string("name")->primary();
             $table->timestamps();
