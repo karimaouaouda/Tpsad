@@ -87,8 +87,8 @@ class Etudiant extends Authenticatable
     public function sendTo(Speciality $speciality){
         $choices = $this->choices;
         foreach ($choices as $choice){
-            $choice->status = "rejected";
-            if($choice->speciality_id == $speciality->id){
+            $choice->pivot->status = "rejected";
+            if($choice->pivot->speciality_id == $speciality->id){
                 $choice->pivot->status = "accepted";
             }
             $choice->pivot->save();

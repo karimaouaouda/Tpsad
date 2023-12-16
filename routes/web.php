@@ -109,6 +109,72 @@ Route::prefix("admin")->middleware('auth:admin')->name('admin.')->group(function
 
 
 
+//now the etudiant routes
+Route::prefix("etudiant")->middleware('auth:etudiant')->name('etudiant.')->group(function(){
+    Route::get('/', function(){
+        return redirect()->to(route('dashboard'));
+    })->name('home');
+
+    Route::get('/chose' , function (){
+        if(count(auth("etudiant")->user()->choices) > 0 || auth("etudiant")->user()->oriented){
+            return redirect()->to(route('etudiant.result'))->with('status' , "you already chosed or oriented");
+        }
+        $specialities = Speciality::all();
+        return view("etudiant.chose", compact('specialities'));
+    })->name('chose');
+
+
+
+    Route::post('/chose' , function(\Illuminate\Http\Request $request){
+
+
+        $request->validate([
+            "choice_1" => ['required', 'exists:specialities,id'],
+            "choice_2" => ['required', 'exists:specialities,id'],
+            "choice_3" => ['required', 'exists:specialities,id'],
+        ]);
+        $mat = auth("etudiant")->user()->matricule;
+        $choices = array(
+            [
+                "etudiant_matricule" => $mat,
+                "speciality_id" => $request->choice_1
+            ],
+            [
+                "etudiant_matricule" => $mat,
+                "speciality_id" => $request->choice_2
+            ],
+            [
+                "etudiant_matricule" => $mat,
+                "speciality_id" => $request->choice_3
+            ]
+        );
+
+
+        foreach ($choices as $choice){
+            \Illuminate\Support\Facades\DB::table("choix")->insert($choice);
+        }
+
+        return redirect()->to(route('dashboard'));
+    } );
+
+    Route::get('/result' , function(){
+        $etudiant = auth('etudiant')->user();
+
+        $choices = $etudiant->choices;
+        $dir = $etudiant->speciality ?? null;
+        $oriented = $etudiant->oriented;
+
+
+        return view("etudiant.result", compact("choices", "dir", "oriented") );
+    })->name('result');
+
+
+
+
+});
+
+
+
 
 
 
@@ -128,3 +194,11 @@ Route::middleware([
         return view('etudiant.home');
     })->name('dashboard');
 });
+
+/*
+ * \Illuminate\Support\Facades\DB::table("messagings")
+            ->where("sedner", $user->number)
+            ->orWhere("receiver", $user)
+            ->distinct();
+
+ */

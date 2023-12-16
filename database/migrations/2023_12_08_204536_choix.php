@@ -14,10 +14,20 @@ return new class extends Migration
         Schema::dropIfExists("choix");
         Schema::create('choix', function (Blueprint $table) {
             $table->integer("etudiant_matricule", unsigned: true);
+
+            $table->foreignId("speciality_id")
+                ->references("id")
+                ->on("specialities")
+                ->cascadeOnDelete()->cascadeOnUpdate();
+
             $table->enum("status", array("waiting", "rejected", "accepted"))->default("waiting");
-            $table->foreign("etudiant_matricule")->references("matricule")->on("etudiants")->cascadeOnDelete();
-            $table->foreignId("speciality_id")->references("id")->on("specialities")->cascadeOnDelete()->cascadeOnUpdate();
-            $table->integer("priority", unsigned:true);
+
+            $table->foreign("etudiant_matricule")
+                ->references("matricule")
+                ->on("etudiants")
+                ->cascadeOnDelete()->cascadeOnUpdate();
+
+            $table->integer("priority", unsigned:true)->default(1);
         });
     }
 
