@@ -40,7 +40,7 @@ Route::prefix("admin")->middleware('auth:admin')->name('admin.')->group(function
 
     Route::post('/delete-etudiant/{etudiant}' , function(Etudiant $etudiant){
         $etudiant->delete();
-        return redirect()->back();
+        return redirect()->back()->with("etudiant deleted successfully");
     })->name('remove.etudiant');
 
     Route::get('/create-etudiant' , function(Etudiant $etudiant){
@@ -69,7 +69,7 @@ Route::prefix("admin")->middleware('auth:admin')->name('admin.')->group(function
             "arabic" => $request->arab_note,
             "science" => $request->sci_note
         ]);
-        return redirect()->back();
+        return redirect()->back()->with('status', 'etudiant updated successfully');
     });
 
     Route::post('/remove-etudiant/{etudiant}' , function(Etudiant $etudiant){
@@ -88,8 +88,57 @@ Route::prefix("admin")->middleware('auth:admin')->name('admin.')->group(function
     })->name('remove.speciality');
 
     Route::get('/create-speciality' , function(){
-        return view('admin.create-speciality');
+        $modules  = \App\Models\Module::all();
+        return view('admin.create-speciality', compact("modules"));
     })->name('create.speciality');
+
+    Route::post('/create-speciality', function(\Illuminate\Http\Request $request){
+        $request->validate([
+            "name" => ['required', 'min:15' , 'unique:specialities'],
+            "university" => ['required', 'min:15'],
+            "module_name" => ['required', 'exists:modules,name'],
+            "places"=> ['integer', "max:200", "min:1"]
+        ]);
+        $speciality = new Speciality($request->all());
+
+        if($request->has("bac_only")){
+            $speciality->only_bac = true;
+        }else{
+            $speciality->only_bac = false;
+        }
+
+        $speciality->save();
+
+        return redirect()->back()->with('status' , 'speciality created successfully');
+    });
+
+    Route::get('/edit-speciality/{speciality}', function(Speciality $speciality){
+        $modules  = \App\Models\Module::all();
+        return view('admin.edit-speciality', compact("modules", 'speciality'));
+    })->name("edit.speciality");
+
+    Route::post('/edit-speciality/{speciality}' , function(\Illuminate\Http\Request $request, Speciality $speciality){
+        $request->validate([
+            "name" => ['required', 'min:15', \Illuminate\Validation\Rule::unique("specialities")->ignore($speciality->id)],
+            "university" => ['required', 'min:15'],
+            "module_name" => ['required', 'exists:modules,name'],
+            "places"=> ['integer', "max:200", "min:1"]
+        ]);
+
+        $request->merge([
+            'only_bac' => $request->has('bac_only')
+        ]);
+
+        $speciality->update($request->all());
+
+        return redirect()->back()->with('status' , "speciality updated successfully");
+    });
+
+
+    Route::post('/remove-speciality/{speciality}', function(Speciality $speciality){
+        $speciality->delete();
+        return redirect()->back()->with('status' , 'speciality deletted successfully');
+    })->name("remove.speciality");
 
 
 

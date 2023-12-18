@@ -8,7 +8,7 @@
     </div>
 
     <div class="container drop-shadow-lg mt-2 mx-auto w-full md:w-4/5 bg-[#f5f5f5] rounded-lg p-2">
-        <form action="{{route('admin.create.etudiant')}}" class="mx-auto" method="post">
+        <form action="{{route('admin.create.speciality')}}" class="mx-auto" method="post">
             @csrf
             <div class="form-errors my-2"></div>
             <div class="inputs">
@@ -40,10 +40,13 @@
 
 
                 <div class="inpt my-4 w-full text-center">
-                    <select class="m-auto w-4/5 border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 " name="branch_name" id="branch_name">
+                    <select class="m-auto w-4/5 border-b border-l bg-transparent focus:bg-white border-sky-300 focus:border focus:border-sky-500 duration-150 ease-in-out outline-none h-10 px-4 " name="module_name" id="module_name">
                         <option value="none" selected disabled>chose main module name</option>
+                        @foreach($modules as $module)
+                            <option value="{{$module->name}}"  @selected(old('module_name') == $module->name) >{{$module->name}}</option>
+                        @endforeach
                     </select>
-                    @error('branch_name')
+                    @error('module_name')
                         <div class="text-center text-red-400 font-medium">
                             {{$message}}
                         </div>

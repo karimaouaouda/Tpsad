@@ -61,10 +61,15 @@
                                             {{$speciality->created_at}}
                                         </td>
                                         <td class="px-6 py-4">
-                                            <a href="#" class="px-4 py-1 text-sm text-indigo-600 bg-indigo-200 rounded-full">Edit</a>
+                                            <a href="{{ route('admin.edit.speciality' , ['speciality' => $speciality->id]) }}" class="px-4 py-1 text-sm text-indigo-600 bg-indigo-200 rounded-full">Edit</a>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <a href="#" class="px-4 py-1 text-sm text-red-400 bg-red-200 rounded-full">Delete</a>
+                                            <form action="{{ route('admin.remove.speciality' , ['speciality' => $speciality->id]) }}" method="post">
+                                                @csrf
+                                                <button type="submit" class="px-4 py-1 text-sm text-red-400 bg-red-200 rounded-full">
+                                                    Delete
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                     @endforeach

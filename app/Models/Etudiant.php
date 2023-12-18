@@ -97,6 +97,10 @@ class Etudiant extends Authenticatable
         $this->speciality_id = $speciality->id;
         $this->save();
 
+        foreach ($this->choices as $choice){
+            $choice->pivot->delete();
+        }
+
 
     }
 
@@ -129,6 +133,31 @@ class Etudiant extends Authenticatable
             $pivot->note = $note;
             $pivot->save();
         }
+    }
+
+    public function rejectedFrom(Speciality $speciality){
+        $choices = $this->choices;
+
+        $waiting = 0;
+        $accepted = 0;
+        foreach($choices as $choice){
+            if($choice->id == $speciality->id){
+                $choice->pivot->status = "rejected";
+                $choice->pivot->save();
+            }
+
+            if($choice->pivot->status == 'waiting'){
+                $waiting++;
+            }
+        }
+
+        if($waiting < 1){
+            foreach ($choices as $choice){
+                $choice->pivot->delete();
+            }
+        }
+
+
     }
 
 

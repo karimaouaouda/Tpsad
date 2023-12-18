@@ -70,8 +70,7 @@ class Controller extends BaseController
             }
         }
 
+        return redirect()->back()->with('status' , "etudiants oriented successfully");
 
-
-        return redirect()->back();
     }
 }

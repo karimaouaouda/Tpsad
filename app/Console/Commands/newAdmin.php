@@ -52,21 +52,21 @@ class newAdmin extends Command
                 "university" => "guelma 1954",
                 "name" => "math informatic",
                 "only_bac" => true,
-                "places" => 150,
+                "places" => 2,
                 "module_name" => "math"
             ],
             [
                 "university" => "guelma 1954",
                 "name" => "science technology",
                 "only_bac" => true,
-                "places" => 50,
+                "places" => 4,
                 "module_name" => "science"
             ],
             [
                 "university" => "guelma 1954",
                 "name" => "science matiere",
                 "only_bac" => false,
-                "places" => 50,
+                "places" => 5,
                 "module_name" => null
             ],
         ];

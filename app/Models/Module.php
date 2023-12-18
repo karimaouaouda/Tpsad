@@ -10,6 +10,7 @@ class Module extends Model
     use HasFactory;
 
     protected $primaryKey = "name";
+    public $incrementing = false;
 
     protected $fillable = [
         "name"
