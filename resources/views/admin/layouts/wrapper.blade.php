@@ -195,7 +195,7 @@
                         <div
                             class="img-container border border-sky-500 h-full w-12 rounded-xl overflow-hidden cursor-pointer
                             drop-shadow-lg ">
-                            <img class="h-full w-full" src="{{asset('./assets/media/profile.webp')}}" alt="">
+                            <img class="h-full w-full" src="{{ Auth::user()->profile_photo_url }}" alt="">
                         </div>
                     </div>
                 </div>
